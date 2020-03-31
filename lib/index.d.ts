@@ -2,6 +2,7 @@ export declare class Aws {
     private options;
     constructor(options?: IOptions);
     command(command: string, callback?: (err: any, data: any) => void): Promise<any>;
+    private sanitizeCommand;
 }
 export interface IOptions {
     accessKey?: string;

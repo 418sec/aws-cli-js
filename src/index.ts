@@ -25,7 +25,7 @@ export class Aws {
 
   public command(command: string, callback?: (err: any, data: any) => void) {
     let aws = this;
-    let execCommand = 'aws ' + command;
+    let execCommand = 'aws ' + this.sanitizeCommand(command);
 
     const promise = Promise.resolve().then(function () {
       //console.log('execCommand =', execCommand);
@@ -88,6 +88,10 @@ export class Aws {
     });
 
     return nodeify(promise, callback);
+  }
+
+  private sanitizeCommand(command: string) {
+    return command.replace(/;/g, '');
   }
 }
 
