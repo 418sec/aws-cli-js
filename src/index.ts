@@ -16,7 +16,6 @@ const extractResult = (result: Result): Result => {
 };
 
 export class Aws {
-
   constructor(private options: IOptions = {
     accessKey: undefined,
     currentWorkingDirectory: undefined,
@@ -25,11 +24,10 @@ export class Aws {
 
   public command(command: string, callback?: (err: any, data: any) => void) {
     let aws = this;
-    let execCommand = 'aws ' + this.sanitizeCommand(command);
+    let execCommand = 'aws ' + AwsCommandSanitizer.sanitize(command);
 
     const promise = Promise.resolve().then(function () {
       //console.log('execCommand =', execCommand);
-
 
       const env_vars = ('HOME PATH AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY ' +
         'AWS_SESSION_TOKEN AWS_DEFAULT_REGION ' +
@@ -89,12 +87,7 @@ export class Aws {
 
     return nodeify(promise, callback);
   }
-
-  private sanitizeCommand(command: string) {
-    return command.replace(/;/g, '');
-  }
 }
-
 
 export interface IOptions {
   accessKey?: string;
@@ -116,5 +109,11 @@ export class Options implements IOptions {
     public secretKey?: string,
     public sessionToken?: string,
     public currentWorkingDirectory?: string) { }
+}
+
+export class AwsCommandSanitizer {
+  public static sanitize(command: string) {
+    return command.replace(/[^\w\s\-\"\/\:\.]/gi, '');
+  }
 }
 

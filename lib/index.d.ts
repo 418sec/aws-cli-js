@@ -2,7 +2,6 @@ export declare class Aws {
     private options;
     constructor(options?: IOptions);
     command(command: string, callback?: (err: any, data: any) => void): Promise<any>;
-    private sanitizeCommand;
 }
 export interface IOptions {
     accessKey?: string;
@@ -16,4 +15,7 @@ export declare class Options implements IOptions {
     sessionToken?: string | undefined;
     currentWorkingDirectory?: string | undefined;
     constructor(accessKey?: string | undefined, secretKey?: string | undefined, sessionToken?: string | undefined, currentWorkingDirectory?: string | undefined);
+}
+export declare class AwsCommandSanitizer {
+    static sanitize(command: string): null;
 }
